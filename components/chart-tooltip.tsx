@@ -4,7 +4,13 @@ type PayloadItem = {
   name: string;
   value: number;
   fill: string;
-  payload: any;
+  payload: {
+    model: string;
+    input: number;
+    output: number;
+    provider: string;
+    id: string;
+  };
 };
 
 interface ChartTooltipProps {

@@ -10,7 +10,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-
 import {
   Card,
   CardContent,
@@ -18,7 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
 import { ChartTooltip } from './chart-tooltip';
 import { SettingsPanel, type AIModel } from './settings-panel';
 
@@ -155,8 +153,16 @@ const ALL_MODELS: Array<AIModel> = [
   },
 ];
 
-function CustomXAxisTick(props: any) {
-  const { x, y, payload } = props;
+interface CustomXAxisTickProps {
+  x?: number;
+  y?: number;
+  payload?: {
+    value: string;
+  };
+}
+
+function CustomXAxisTick(props: CustomXAxisTickProps) {
+  const { x = 0, y = 0, payload = { value: '' } } = props;
 
   return (
     <g transform={`translate(${x},${y})`}>
