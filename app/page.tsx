@@ -1,5 +1,5 @@
-import { ComparisonBarChart } from "@/components/bar-chart";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ComparisonBarChart } from '@/components/bar-chart';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function Home() {
   return (

@@ -1,41 +1,47 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Settings2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from 'react';
+import { Settings2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu"
-import { Checkbox } from "@/components/ui/checkbox"
+} from '@/components/ui/dropdown-menu';
+import { Checkbox } from '@/components/ui/checkbox';
 
-export type ProviderName = "OpenAI" | "Google" | "Anthropic" | "Mistral AI" | "DeepSeek" | "xAI";
+export type ProviderName =
+  | 'OpenAI'
+  | 'Google'
+  | 'Anthropic'
+  | 'Mistral AI'
+  | 'DeepSeek'
+  | 'xAI';
 
 export interface AIModel {
-  id: string
-  model: string
-  input: number
-  output: number
-  provider: ProviderName
+  id: string;
+  model: string;
+  input: number;
+  output: number;
+  provider: ProviderName;
 }
 
 interface SettingsPanelProps {
-  models: AIModel[]
-  enabledModels: string[]
-  onToggleModel: (modelId: string) => void
-  onToggleAll: (enabled: boolean) => void
+  models: AIModel[];
+  enabledModels: string[];
+  onToggleModel: (modelId: string) => void;
+  onToggleAll: (enabled: boolean) => void;
 }
 
 export function SettingsPanel({
   models,
   enabledModels,
   onToggleModel,
-  onToggleAll
+  onToggleAll,
 }: SettingsPanelProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -49,7 +55,10 @@ export function SettingsPanel({
           <span className="sr-only">Settings</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-64 max-h-[400px] overflow-y-auto">
+      <DropdownMenuContent
+        align="end"
+        className="w-64 max-h-[400px] overflow-y-auto"
+      >
         <DropdownMenuLabel>Visible Models</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="px-2 py-1.5">
@@ -62,10 +71,7 @@ export function SettingsPanel({
               }}
               className="mr-2"
             />
-            <label
-              htmlFor="all-models"
-              className="text-sm cursor-pointer"
-            >
+            <label htmlFor="all-models" className="text-sm cursor-pointer">
               All Models
             </label>
           </div>
@@ -80,12 +86,12 @@ export function SettingsPanel({
             <Checkbox
               checked={enabledModels.includes(model.id)}
               className="mr-2"
-              onCheckedChange={() => { }}
+              onCheckedChange={() => {}}
             />
             <span className="text-sm">{model.model}</span>
           </div>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

@@ -1,23 +1,23 @@
-"use client"
+'use client';
 
 type PayloadItem = {
-  name: string
-  value: number
-  fill: string
-  payload: any
-}
+  name: string;
+  value: number;
+  fill: string;
+  payload: any;
+};
 
 interface ChartTooltipProps {
-  active?: boolean
-  payload?: PayloadItem[]
-  label?: string
+  active?: boolean;
+  payload?: PayloadItem[];
+  label?: string;
 }
 
 export function ChartTooltip(props: ChartTooltipProps) {
-  const { active, payload, label } = props
+  const { active, payload, label } = props;
 
   if (!active || !payload?.length) {
-    return null
+    return null;
   }
 
   return (
@@ -25,7 +25,10 @@ export function ChartTooltip(props: ChartTooltipProps) {
       <p className="font-medium mb-3 text-sm">{label}</p>
       <div className="space-y-2">
         {payload.map((entry, index) => (
-          <div key={`item-${index}`} className="flex items-center justify-between gap-4">
+          <div
+            key={`item-${index}`}
+            className="flex items-center justify-between gap-4"
+          >
             <div className="flex items-center gap-2">
               <div
                 className="h-3 w-3 rounded-full"
@@ -43,10 +46,10 @@ export function ChartTooltip(props: ChartTooltipProps) {
         <div className="flex justify-between items-center">
           <span className="text-muted-foreground">Total:</span>
           <span className="font-medium tabular-nums">
-            ${(payload.reduce((sum, entry) => sum + entry.value, 0)).toFixed(2)}
+            ${payload.reduce((sum, entry) => sum + entry.value, 0).toFixed(2)}
           </span>
         </div>
       </div>
     </div>
-  )
+  );
 }
