@@ -18,7 +18,11 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ChartTooltip } from './chart-tooltip';
-import { SettingsPanel, type AIModel } from './settings-panel';
+import {
+  SettingsPanel,
+  type AIModel,
+  type PriceDisplayMode,
+} from './settings-panel';
 
 const BLURPLE = '#5865F2';
 const BRIGHT_BLUE = '#00A8FC';
@@ -192,6 +196,8 @@ function roundToNextInteger(value: number): number {
 export function ComparisonBarChart() {
   const initialModels = ALL_MODELS.map((m) => m.id).slice(0, -2);
   const [enabledModels, setEnabledModels] = useState(initialModels);
+  const [priceDisplayMode, setPriceDisplayMode] =
+    useState<PriceDisplayMode>('both');
 
   const chartData = useMemo(() => {
     return ALL_MODELS.filter((model) => enabledModels.includes(model.id));
@@ -199,13 +205,19 @@ export function ComparisonBarChart() {
 
   const maxValue = useMemo(() => {
     if (chartData.length === 0) return 20;
-    const maxOutput = Math.max(...chartData.map((item) => item.output));
-    const maxInput = Math.max(...chartData.map((item) => item.input));
-    const absoluteMax = Math.max(maxOutput, maxInput);
+    let relevantValues = [];
+    if (priceDisplayMode === 'both' || priceDisplayMode === 'input') {
+      relevantValues.push(...chartData.map((item) => item.input));
+    }
+    if (priceDisplayMode === 'both' || priceDisplayMode === 'output') {
+      relevantValues.push(...chartData.map((item) => item.output));
+    }
+
+    const absoluteMax = Math.max(...relevantValues);
     return absoluteMax < 10
       ? roundToNextInteger(absoluteMax)
       : roundToMultipleOf20(absoluteMax);
-  }, [chartData]);
+  }, [chartData, priceDisplayMode]);
 
   const formatDollar = (value: number) => `$${value.toFixed(2)}`;
 
@@ -228,6 +240,10 @@ export function ComparisonBarChart() {
     );
   };
 
+  const deselectAllModels = () => {
+    setEnabledModels([]);
+  };
+
   return (
     <Card className="w-full max-w-screen mx-auto shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -242,6 +258,9 @@ export function ComparisonBarChart() {
           enabledModels={enabledModels}
           onToggleModel={toggleModel}
           onToggleAll={setAllModels}
+          onDeselectAll={deselectAllModels}
+          priceDisplayMode={priceDisplayMode}
+          onPriceDisplayModeChange={setPriceDisplayMode}
         />
       </CardHeader>
       <CardContent className="pb-8">
@@ -279,22 +298,28 @@ export function ComparisonBarChart() {
                 verticalAlign="bottom"
                 height={36}
               />
-              <Bar
-                name="Input Cost"
-                dataKey="input"
-                fill={BLURPLE}
-                radius={[4, 4, 0, 0]}
-                barSize={24}
-                animationDuration={1500}
-              />
-              <Bar
-                name="Output Cost"
-                dataKey="output"
-                fill={BRIGHT_BLUE}
-                radius={[4, 4, 0, 0]}
-                barSize={24}
-                animationDuration={1500}
-              />
+              {(priceDisplayMode === 'both' ||
+                priceDisplayMode === 'input') && (
+                <Bar
+                  name="Input Cost"
+                  dataKey="input"
+                  fill={BLURPLE}
+                  radius={[4, 4, 0, 0]}
+                  barSize={24}
+                  animationDuration={1500}
+                />
+              )}
+              {(priceDisplayMode === 'both' ||
+                priceDisplayMode === 'output') && (
+                <Bar
+                  name="Output Cost"
+                  dataKey="output"
+                  fill={BRIGHT_BLUE}
+                  radius={[4, 4, 0, 0]}
+                  barSize={24}
+                  animationDuration={1500}
+                />
+              )}
               <defs>
                 <filter
                   id="tooltip-shadow"

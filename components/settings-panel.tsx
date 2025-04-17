@@ -28,11 +28,16 @@ export interface AIModel {
   provider: ProviderName;
 }
 
+export type PriceDisplayMode = 'both' | 'input' | 'output';
+
 interface SettingsPanelProps {
   models: AIModel[];
   enabledModels: string[];
   onToggleModel: (modelId: string) => void;
   onToggleAll: (enabled: boolean) => void;
+  onDeselectAll: () => void;
+  priceDisplayMode?: PriceDisplayMode;
+  onPriceDisplayModeChange?: (mode: PriceDisplayMode) => void;
 }
 
 export function SettingsPanel({
@@ -40,6 +45,9 @@ export function SettingsPanel({
   enabledModels,
   onToggleModel,
   onToggleAll,
+  onDeselectAll,
+  priceDisplayMode = 'both',
+  onPriceDisplayModeChange = () => {},
 }: SettingsPanelProps) {
   const [open, setOpen] = useState(false);
 
@@ -59,9 +67,47 @@ export function SettingsPanel({
         align="end"
         className="w-64 max-h-[400px] overflow-y-auto"
       >
-        <DropdownMenuLabel>Visible Models</DropdownMenuLabel>
+        <DropdownMenuLabel>Display Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <div className="px-2 py-1.5">
+        <div className="px-2 py-1.5 space-y-2">
+          <div className="flex items-center">
+            <Checkbox
+              id="price-both"
+              checked={priceDisplayMode === 'both'}
+              onCheckedChange={() => onPriceDisplayModeChange('both')}
+              className="mr-2"
+            />
+            <label htmlFor="price-both" className="text-sm cursor-pointer">
+              Show Both Prices
+            </label>
+          </div>
+          <div className="flex items-center">
+            <Checkbox
+              id="price-input"
+              checked={priceDisplayMode === 'input'}
+              onCheckedChange={() => onPriceDisplayModeChange('input')}
+              className="mr-2"
+            />
+            <label htmlFor="price-input" className="text-sm cursor-pointer">
+              Input Price Only
+            </label>
+          </div>
+          <div className="flex items-center">
+            <Checkbox
+              id="price-output"
+              checked={priceDisplayMode === 'output'}
+              onCheckedChange={() => onPriceDisplayModeChange('output')}
+              className="mr-2"
+            />
+            <label htmlFor="price-output" className="text-sm cursor-pointer">
+              Output Price Only
+            </label>
+          </div>
+        </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel className="mt-2">Visible Models</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <div className="px-2 py-1.5 space-y-2">
           <div className="flex items-center">
             <Checkbox
               id="all-models"
@@ -73,6 +119,21 @@ export function SettingsPanel({
             />
             <label htmlFor="all-models" className="text-sm cursor-pointer">
               All Models
+            </label>
+          </div>
+          <div className="flex items-center">
+            <Checkbox
+              id="none-models"
+              checked={enabledModels.length === 0}
+              onCheckedChange={() => {
+                if (enabledModels.length > 0) {
+                  onDeselectAll();
+                }
+              }}
+              className="mr-2"
+            />
+            <label htmlFor="none-models" className="text-sm cursor-pointer">
+              Deselect All
             </label>
           </div>
         </div>
