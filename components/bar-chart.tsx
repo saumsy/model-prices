@@ -205,7 +205,7 @@ export function ComparisonBarChart() {
 
   const maxValue = useMemo(() => {
     if (chartData.length === 0) return 20;
-    let relevantValues = [];
+    const relevantValues = [];
     if (priceDisplayMode === 'both' || priceDisplayMode === 'input') {
       relevantValues.push(...chartData.map((item) => item.input));
     }
