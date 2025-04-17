@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'AI Model Price Comparison',
+  title: 'AI Models Price Comparison',
   description: 'A comprehensive comparison of AI models pricing',
 };
 
