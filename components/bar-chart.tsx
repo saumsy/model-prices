@@ -43,7 +43,7 @@ const ALL_MODELS: Array<AIModel> = [
     provider: 'Mistral AI',
   },
   {
-    id: 'gemini-flash',
+    id: 'gemini-2.0-flash',
     model: 'Gemini 2.0 Flash',
     input: 0.1,
     output: 0.4,
@@ -69,6 +69,13 @@ const ALL_MODELS: Array<AIModel> = [
     input: 0.15,
     output: 0.6,
     provider: 'OpenAI',
+  },
+  {
+    id: 'gemini-2.5-flash',
+    model: 'Gemini 2.5 Flash',
+    input: 0.15,
+    output: 0.6,
+    provider: 'Google',
   },
   {
     id: 'deepseek-v3',
